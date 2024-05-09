@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button"
 import {
     Dialog,
-    DialogContent, 
+    DialogContent,
     DialogFooter,
     DialogHeader,
-    DialogTitle, 
-} from "@/components/ui/dialog" 
+    DialogTitle,
+} from "@/components/ui/dialog"
 import ProfilePhoto from "./shared/ProfilePhoto"
 import { Textarea } from "./ui/textarea"
 import { Images } from "lucide-react"
@@ -13,13 +13,14 @@ import { useRef, useState } from "react"
 import { readFileAsDataUrl } from "@/lib/utils"
 import Image from "next/image"
 import { createPostAction } from "@/lib/serveractions"
+import { toast } from "sonner"
 
 export function PostDialog({ setOpen, open, src }: { setOpen: any, open: boolean, src: string }) {
     const inputRef = useRef<HTMLInputElement>(null);
     const [selectedFile, setSelectedFile] = useState<string>("");
     const [inputText, setInputText] = useState<string>("");
 
-    const changeHandler = (e:any) => {
+    const changeHandler = (e: any) => {
         setInputText(e.target.value);
     }
 
@@ -30,12 +31,12 @@ export function PostDialog({ setOpen, open, src }: { setOpen: any, open: boolean
             setSelectedFile(dataUrl);
         }
     }
-    const postActionHandler = async (formData:FormData) => {
+    const postActionHandler = async (formData: FormData) => {
         const inputText = formData.get('inputText') as string;
         try {
             await createPostAction(inputText, selectedFile);
         } catch (error) {
-          console.log('error occurred', error);  
+            console.log('error occurred', error);
         }
         setInputText("");
         setOpen(false);
@@ -53,7 +54,14 @@ export function PostDialog({ setOpen, open, src }: { setOpen: any, open: boolean
                         </div>
                     </DialogTitle>
                 </DialogHeader>
-                <form action={postActionHandler}>
+                <form action={(formData) => {
+                    const promise = postActionHandler(formData);
+                    toast.promise(promise, {
+                        loading:'Creating post...',
+                        success:'Post created',
+                        error:'Failed to create post'
+                    })
+                }}>
                     <div className="flex flex-col">
                         <Textarea
                             id="name"
@@ -67,7 +75,7 @@ export function PostDialog({ setOpen, open, src }: { setOpen: any, open: boolean
                             {
                                 selectedFile && (
                                     <Image
-                                        src = {selectedFile}
+                                        src={selectedFile}
                                         alt="preview-image"
                                         width={400}
                                         height={400}

@@ -19,9 +19,11 @@
     "lucide-react": "^0.378.0",
     "mongoose": "^8.3.4",
     "next": "14.2.3",
+    "next-themes": "^0.3.0",
     "react": "^18",
     "react-dom": "^18",
     "react-timeago": "^7.2.0",
+    "sonner": "^1.4.41",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7"
   },
