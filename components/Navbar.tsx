@@ -11,7 +11,7 @@ const Navbar = () => {
             <div className=' flex items-center max-w-6xl justify-between h-14 mx-auto px-3'>
                 <div className='flex items-center gap-2'>
                     <Image
-                        src={'/Linkedin_icon.webp'}
+                        src={'/Linkedin_icon.svg.png'}
                         alt="Logo"
                         width={35}
                         height={35}
